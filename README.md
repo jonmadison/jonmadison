@@ -3,7 +3,7 @@ i'm jon.
 
 i've been in tech for a few decades
 
-i'm currently at amazon.com. started in retail search, currently in devices (echo/alexa/etc.), looking for my next area
+i'm currently at amazon.com as a senior design technologist, focused on experimental AI efforts on the futures subteam. started in retail search, currently in devices (echo/alexa/etc.), looking for my next area
 
 i've been at a few startups
 
