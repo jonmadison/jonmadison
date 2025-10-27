@@ -112,6 +112,7 @@ body {
 @media (max-width: 900px) {
   .cover-header {
     margin-bottom: 128px;
+    margin-top: 16px;
   }
   
   .cover-header h1 {
@@ -127,6 +128,7 @@ body {
 @media (max-width: 480px) {
   .cover-header {
     margin-bottom: 96px;
+    margin-top: 64px;
   }
   
   .cover-header h1 {
@@ -146,7 +148,7 @@ body {
 }
 
 .cover-header.animate-fall {
-  animation: fall-and-bounce 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  animation: fall-and-bounce 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 @keyframes fall-and-bounce {
@@ -154,15 +156,12 @@ body {
     transform: translateY(-100vh);
     opacity: 0;
   }
-  60% {
-    transform: translateY(20px);
+  70% {
+    transform: translateY(8px);
     opacity: 1;
   }
-  80% {
-    transform: translateY(-10px);
-  }
-  90% {
-    transform: translateY(5px);
+  85% {
+    transform: translateY(-3px);
   }
   100% {
     transform: translateY(0);
@@ -173,7 +172,7 @@ body {
 /* Navigation Links */
 .nav-links {
   position: absolute;
-  bottom: 104px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%) translateY(100%);
   display: flex;
