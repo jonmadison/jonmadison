@@ -77,7 +77,7 @@ function App() {
               key={navLink.label}
               className={`nav-link ${hoveredLinkIndex === index ? 'touch-hovered' : ''}`}
               style={{ 
-                animationDelay: `${0.8 + index * 0.1}s`,
+                animationDelay: `${1.2 + index * 0.15}s`,
                 '--hover-color': navLink.color,
                 '--hover-opacity': navLink.opacity || 0.15,
                 '--image-zoom': navLink.imageZoom || 1.1

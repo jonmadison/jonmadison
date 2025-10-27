@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Deploy script for jonmadison.com
+# This script builds the site and uploads it to S3, then invalidates CloudFront cache
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Configuration
+BUCKET_NAME="jonmadison.com-site-bucket"
+DISTRIBUTION_ID="E1DMCM4HHASAZO" # Will be populated after CDK deployment
+BUILD_DIR="dist"
+
+echo -e "${YELLOW}🚀 Starting deployment process...${NC}"
+
+# Check if we're in the right directory
+if [ ! -f "package.json" ]; then
+    echo -e "${RED}❌ Error: package.json not found. Please run this script from the project root.${NC}"
+    exit 1
+fi
+
+# Build the site
+echo -e "${YELLOW}📦 Building the site...${NC}"
+npm run build
+
+# Check if build directory exists
+if [ ! -d "$BUILD_DIR" ]; then
+    echo -e "${RED}❌ Error: Build directory '$BUILD_DIR' not found. Build may have failed.${NC}"
+    exit 1
+fi
+
+# Upload to S3
+echo -e "${YELLOW}☁️  Uploading to S3...${NC}"
+aws s3 sync $BUILD_DIR s3://$BUCKET_NAME --delete --cache-control "public, max-age=31536000" --exclude "*.html" --profile jon
+aws s3 sync $BUILD_DIR s3://$BUCKET_NAME --delete --cache-control "public, max-age=0, must-revalidate" --include "*.html" --profile jon
+
+echo -e "${GREEN}✅ Upload to S3 completed!${NC}"
+
+# Invalidate CloudFront cache if distribution ID is set
+if [ -n "$DISTRIBUTION_ID" ]; then
+    echo -e "${YELLOW}🔄 Invalidating CloudFront cache...${NC}"
+    aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*" --profile jon
+    echo -e "${GREEN}✅ CloudFront cache invalidation initiated!${NC}"
+else
+    echo -e "${YELLOW}⚠️  Distribution ID not set. Skipping CloudFront cache invalidation.${NC}"
+    echo -e "${YELLOW}   Update DISTRIBUTION_ID in this script after CDK deployment.${NC}"
+fi
+
+echo -e "${GREEN}🎉 Deployment completed successfully!${NC}"
+echo -e "${GREEN}🌐 Your site should be available at: https://jonmadison.com${NC}"

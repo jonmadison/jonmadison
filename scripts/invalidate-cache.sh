@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# CloudFront cache invalidation script for jonmadison.com
+# This script invalidates the CloudFront cache to force fresh content delivery
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Configuration
+DISTRIBUTION_ID="E1DMCM4HHASAZO" # Will be populated after CDK deployment
+
+echo -e "${YELLOW}🔄 Starting CloudFront cache invalidation...${NC}"
+
+# Check if distribution ID is set
+if [ -z "$DISTRIBUTION_ID" ]; then
+    echo -e "${RED}❌ Error: DISTRIBUTION_ID is not set.${NC}"
+    echo -e "${YELLOW}   Please update this script with your CloudFront Distribution ID after CDK deployment.${NC}"
+    echo -e "${YELLOW}   You can find it in the CDK output or AWS Console.${NC}"
+    exit 1
+fi
+
+# Check if AWS CLI is installed
+if ! command -v aws &> /dev/null; then
+    echo -e "${RED}❌ Error: AWS CLI is not installed or not in PATH.${NC}"
+    echo -e "${YELLOW}   Please install AWS CLI: https://aws.amazon.com/cli/${NC}"
+    exit 1
+fi
+
+# Check AWS credentials
+if ! aws sts get-caller-identity --profile jon &> /dev/null; then
+    echo -e "${RED}❌ Error: AWS credentials not configured for profile 'jon'.${NC}"
+    echo -e "${YELLOW}   Please run 'aws configure --profile jon' to set up your credentials.${NC}"
+    exit 1
+fi
+
+# Create invalidation
+echo -e "${YELLOW}🌐 Creating invalidation for distribution: $DISTRIBUTION_ID${NC}"
+INVALIDATION_ID=$(aws cloudfront create-invalidation \
+    --distribution-id $DISTRIBUTION_ID \
+    --paths "/*" \
+    --query 'Invalidation.Id' \
+    --output text \
+    --profile jon)
+
+echo -e "${GREEN}✅ Invalidation created successfully!${NC}"
+echo -e "${GREEN}📋 Invalidation ID: $INVALIDATION_ID${NC}"
+
+# Optional: Wait for invalidation to complete
+read -p "Do you want to wait for the invalidation to complete? (y/N): " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo -e "${YELLOW}⏳ Waiting for invalidation to complete...${NC}"
+    aws cloudfront wait invalidation-completed \
+        --distribution-id $DISTRIBUTION_ID \
+        --id $INVALIDATION_ID \
+        --profile jon
+    echo -e "${GREEN}✅ Invalidation completed!${NC}"
+else
+    echo -e "${YELLOW}ℹ️  Invalidation is running in the background. It typically takes 10-15 minutes to complete.${NC}"
+fi
+
+echo -e "${GREEN}🎉 Cache invalidation process finished!${NC}"
+echo -e "${GREEN}🌐 Your updated site should be available shortly at: https://jonmadison.com${NC}"
