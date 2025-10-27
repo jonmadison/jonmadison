@@ -53,44 +53,46 @@ function App() {
     <div className="app">
       {/* Cover Page */}
       <div className="cover-page">
-        <div
-          className={`cover-header ${animationStarted ? 'animate-fall' : ''}`}
-          // onMouseEnter={() => setIsHovered(true)}
-          // onMouseLeave={() => setIsHovered(false)}
-        >
-          <h1>
-            jon madison
-            {/* {isHovered && (
-              <img
-                src="/bowtie.png"
-                alt="bowtie"
-                className="bowtie"
-              />
-            )} */}
-          </h1>
-        </div>
+        <div className="main-content">
+          <div
+            className={`cover-header ${animationStarted ? 'animate-fall' : ''}`}
+            // onMouseEnter={() => setIsHovered(true)}
+            // onMouseLeave={() => setIsHovered(false)}
+          >
+            <h1>
+              jon madison
+              {/* {isHovered && (
+                <img
+                  src="/bowtie.png"
+                  alt="bowtie"
+                  className="bowtie"
+                />
+              )} */}
+            </h1>
+          </div>
 
-        {/* Navigation Links */}
-        <div className={`nav-links ${animationStarted ? 'animate-rise' : ''}`}>
-          {navLinks.map((navLink, index) => (
-            <div
-              key={navLink.label}
-              className={`nav-link ${hoveredLinkIndex === index ? 'touch-hovered' : ''}`}
-              style={{ 
-                animationDelay: `${1.2 + index * 0.15}s`,
-                '--hover-color': navLink.color,
-                '--hover-opacity': navLink.opacity || 0.15,
-                '--image-zoom': navLink.imageZoom || 1.1
-              } as React.CSSProperties & { '--hover-color': string; '--hover-opacity': number; '--image-zoom': number }}
-              onClick={() => handleNavClick(navLink.link)}
-              onTouchStart={() => handleTouchStart(index)}
-              onTouchEnd={handleTouchEnd}
-              title={navLink.label}
-            >
-              {navLink.image && <img src={navLink.image} alt={navLink.imageAlt || navLink.label} />}
-              <span>{navLink.label}</span>
-            </div>
-          ))}
+          {/* Navigation Links */}
+          <div className={`nav-links ${animationStarted ? 'animate-rise' : ''}`}>
+            {navLinks.map((navLink, index) => (
+              <div
+                key={navLink.label}
+                className={`nav-link ${hoveredLinkIndex === index ? 'touch-hovered' : ''}`}
+                style={{ 
+                  animationDelay: `${1.2 + index * 0.15}s`,
+                  '--hover-color': navLink.color,
+                  '--hover-opacity': navLink.opacity || 0.15,
+                  '--image-zoom': navLink.imageZoom || 1.1
+                } as React.CSSProperties & { '--hover-color': string; '--hover-opacity': number; '--image-zoom': number }}
+                onClick={() => handleNavClick(navLink.link)}
+                onTouchStart={() => handleTouchStart(index)}
+                onTouchEnd={handleTouchEnd}
+                title={navLink.label}
+              >
+                {navLink.image && <img src={navLink.image} alt={navLink.imageAlt || navLink.label} />}
+                <span>{navLink.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
