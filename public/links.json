@@ -10,7 +10,7 @@
     {
         "label": "Music",
         "link": "https://madi.dj",
-        "image": "/pads.png",
+        "image": "/turntable.jpg",
         "color": "#DCCCFF",
         "opacity": 0.5
     },
@@ -20,14 +20,15 @@
         "image": "/linkedin.svg?v2",
         "color": "#FFECBD",
         "opacity": 0.5,
-        "imageZoom": 1.7
+        "imageZoom": 1.3
     },
     {
         "label": "Instagram",
         "link": "https://instagram.com/jonmadison",
         "image": "/ig.png",
         "color": "#FFC7C2",
-        "opacity": 0.5
+        "opacity": 0.5,
+        "imageZoom": 1.6
     },
     {
         "label": "Email",
