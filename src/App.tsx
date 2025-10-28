@@ -1,6 +1,9 @@
 import './App.css'
 import { useState, useEffect } from 'react'
 
+// Configuration constant for number of available backdrop images
+const BACKDROP_COUNT = 12
+
 interface NavLink {
   label: string
   link: string
@@ -15,8 +18,13 @@ function App() {
   const [navLinks, setNavLinks] = useState<NavLink[]>([])
   const [animationStarted, setAnimationStarted] = useState(false)
   const [hoveredLinkIndex, setHoveredLinkIndex] = useState<number | null>(null)
+  const [backgroundImage, setBackgroundImage] = useState<string>('')
 
   useEffect(() => {
+    // Select random backdrop image
+    const randomBackdropNumber = Math.floor(Math.random() * BACKDROP_COUNT) + 1
+    setBackgroundImage(`/backdrops/${randomBackdropNumber}.jpg`)
+
     // Load navigation links from JSON file with cache busting
     const timestamp = new Date().getTime()
     fetch(`/links.json?v=${timestamp}`)
@@ -51,6 +59,54 @@ function App() {
 
   return (
     <div className="app">
+      {/* Background overlay for opacity control */}
+      {backgroundImage && (
+        <>
+          <div 
+            className="background-overlay"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'fixed',
+              opacity: 0.2,
+              zIndex: -3
+            }}
+          />
+          <div 
+            className="background-mask"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              backgroundColor: '#efefef',
+              opacity: 0.2,
+              zIndex: -2
+            }}
+          />
+          <div 
+            className="background-gradient"
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              background: 'linear-gradient(to bottom, transparent 20%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.7) 60%, white 100%)',
+              zIndex: -1
+            }}
+          />
+        </>
+      )}
+      
       {/* Cover Page */}
       <div className="cover-page">
         <div className="main-content">
