@@ -2,7 +2,7 @@ import './App.css'
 import { useState, useEffect } from 'react'
 
 // Configuration constant for number of available backdrop images
-const BACKDROP_COUNT = 12
+const BACKDROP_COUNT = 11
 
 interface NavLink {
   label: string
@@ -128,10 +128,11 @@ function App() {
           </div>
 
           {/* Navigation Links */}
-          <div className={`nav-links ${animationStarted ? 'animate-rise' : ''}`}>
+          <nav className={`nav-links ${animationStarted ? 'animate-rise' : ''}`} aria-label="Main navigation">
             {navLinks.map((navLink, index) => (
-              <div
+              <a
                 key={navLink.label}
+                href={navLink.link}
                 className={`nav-link ${hoveredLinkIndex === index ? 'touch-hovered' : ''}`}
                 style={{ 
                   animationDelay: `${1.2 + index * 0.15}s`,
@@ -139,18 +140,35 @@ function App() {
                   '--hover-opacity': navLink.opacity || 0.15,
                   '--image-zoom': navLink.imageZoom || 1.1
                 } as React.CSSProperties & { '--hover-color': string; '--hover-opacity': number; '--image-zoom': number }}
-                onClick={() => handleNavClick(navLink.link)}
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleNavClick(navLink.link)
+                }}
                 onTouchStart={() => handleTouchStart(index)}
                 onTouchEnd={handleTouchEnd}
-                title={navLink.label}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    handleNavClick(navLink.link)
+                  }
+                }}
+                target={navLink.link.startsWith('mailto:') ? undefined : '_blank'}
+                rel={navLink.link.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                aria-label={`${navLink.label}${navLink.link.startsWith('mailto:') ? ' - Send email' : ' - Opens in new tab'}`}
+                tabIndex={0}
               >
-                {navLink.image && <img src={navLink.image} alt={navLink.imageAlt || navLink.label} />}
+                {navLink.image && <img src={navLink.image} alt="" role="presentation" />}
                 <span>{navLink.label}</span>
-              </div>
+              </a>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
+
+      {/* Footer */}
+      <footer className="site-footer">
+        backdrop photos by jon madison
+      </footer>
     </div>
   )
 }

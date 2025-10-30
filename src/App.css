@@ -247,6 +247,25 @@ body {
   background: color-mix(in srgb, var(--hover-color) calc(var(--hover-opacity) * 100%), white) !important;
 }
 
+/* Focus styles for keyboard navigation */
+.nav-link:focus {
+  outline: 3px solid #4A90E2;
+  outline-offset: 4px;
+  transform: translateY(-5px) !important;
+  background: color-mix(in srgb, var(--hover-color) calc(var(--hover-opacity) * 100%), white) !important;
+}
+
+.nav-link:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.nav-link:focus-visible {
+  outline: 3px solid #4A90E2;
+  outline-offset: 4px;
+  transform: translateY(-5px) !important;
+  background: color-mix(in srgb, var(--hover-color) calc(var(--hover-opacity) * 100%), white) !important;
+}
+
 .nav-link img {
   max-width: calc(32px * var(--image-zoom));
   max-height: calc(32px * var(--image-zoom));
@@ -422,5 +441,31 @@ body {
   .nav-link span {
     font-size: 8px;
     bottom: 12px;
+  }
+}
+
+/* Footer */
+.site-footer {
+  position: fixed;
+  bottom: 24px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  z-index: 1000;
+  opacity: 1;
+}
+
+.site-footer.animate-fade-in {
+  animation: fade-in 0.8s ease-out 1.8s forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
