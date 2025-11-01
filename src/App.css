@@ -225,9 +225,9 @@ body {
 .nav-link {
   width: 5rem;
   height: 5rem;
-  border-radius: 16px;
+  border-radius: 24px;
   background: white;
-  border: 1px solid #777;
+  border: 2px solid #555;
   display: flex;
   flex-direction: column;
   align-items: center;
