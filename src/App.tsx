@@ -1,8 +1,16 @@
 import './App.css'
 import { useState, useEffect } from 'react'
 
-// Configuration constant for number of available backdrop images
-const BACKDROP_COUNT = 11
+// Configuration for available backdrops (images and videos)
+const BACKDROPS = [
+  { type: 'image', file: '1.jpg', meta: 'seatac airport, 35mm film' },
+  { type: 'image', file: '2.jpg', meta: 'virginia, mobile' },
+  { type: 'image', file: '3.jpg', meta: 'CDG france, polaroid spectra film' },
+  { type: 'image', file: '4.jpg', meta: 'washington state, mobile' },
+  { type: 'image', file: '6.jpg', meta: 'san francisco, mobile' },
+  { type: 'video', file: '8.webm', meta: 'washington state, dji drone' },
+  { type: 'video', file: '9.webm', meta: 'washington state, dji drone' },
+] as const
 
 interface NavLink {
   label: string
@@ -18,12 +26,17 @@ function App() {
   const [navLinks, setNavLinks] = useState<NavLink[]>([])
   const [animationStarted, setAnimationStarted] = useState(false)
   const [hoveredLinkIndex, setHoveredLinkIndex] = useState<number | null>(null)
-  const [backgroundImage, setBackgroundImage] = useState<string>('')
+  const [backdropType, setBackdropType] = useState<'image' | 'video'>('image')
+  const [backgroundSource, setBackgroundSource] = useState<string>('')
+  const [backdropMeta, setBackdropMeta] = useState<string>('')
 
   useEffect(() => {
-    // Select random backdrop image
-    const randomBackdropNumber = Math.floor(Math.random() * BACKDROP_COUNT) + 1
-    setBackgroundImage(`/backdrops/${randomBackdropNumber}.jpg`)
+    // Select random backdrop (image or video)
+    const randomIndex = Math.floor(Math.random() * BACKDROPS.length)
+    const selectedBackdrop = BACKDROPS[randomIndex]
+    setBackdropType(selectedBackdrop.type)
+    setBackgroundSource(`/backdrops/${selectedBackdrop.file}`)
+    setBackdropMeta(selectedBackdrop.meta)
 
     // Load navigation links from JSON file with cache busting
     const timestamp = new Date().getTime()
@@ -60,25 +73,48 @@ function App() {
   return (
     <div className="app">
       {/* Background overlay for opacity control */}
-      {backgroundImage && (
+      {backgroundSource && (
         <>
-          <div 
-            className="background-overlay"
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              backgroundImage: `url(${backgroundImage})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center center',
-              backgroundRepeat: 'no-repeat',
-              backgroundAttachment: 'fixed',
-              opacity: 0.2,
-              zIndex: -3
-            }}
-          />
+          {/* Conditional rendering: Video or Image backdrop */}
+          {backdropType === 'video' ? (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                objectFit: 'cover',
+                opacity: 1,
+                zIndex: -3
+              }}
+            >
+              <source src={backgroundSource} type="video/webm" />
+            </video>
+          ) : (
+            <div 
+              className="background-overlay"
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                backgroundImage: `url(${backgroundSource})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed',
+                opacity: 0.8,
+                zIndex: -3
+              }}
+            />
+          )}
+          
           <div 
             className="background-mask"
             style={{
@@ -167,7 +203,12 @@ function App() {
 
       {/* Footer */}
       <footer className="site-footer">
-        backdrop photos by jon madison
+        {backdropMeta && (
+          <div style={{ marginBottom: '4px', fontSize: '11px', opacity: 0.9 }}>
+            {backdropMeta}
+          </div>
+        )}
+        backdrop photos and videos shot by jon madison
       </footer>
     </div>
   )
