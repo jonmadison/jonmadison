@@ -91,3 +91,41 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .blend-text {
+    font-size: 4rem !important; /* 50% of 8rem */
+  }
+  
+  .nav-container {
+    gap: 8px !important; /* Tighter spacing for single row */
+  }
+  
+  .nav-link {
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 16px !important;
+  }
+  
+  .nav-link img {
+    max-width: 32px !important;
+    max-height: 32px !important;
+    margin-top: -4px !important;
+  }
+  
+  .nav-link span {
+    font-size: 10px !important;
+    bottom: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .blend-text {
+    font-size: 3rem !important; /* Even smaller for very small screens */
+  }
+  
+  .nav-container {
+    gap: 6px !important; /* Even tighter for small screens */
+  }
+}

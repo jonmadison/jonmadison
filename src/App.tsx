@@ -60,9 +60,9 @@ function App() {
             margin: 0,
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
-            color: '#333',
+            color: '#555',
             fontSize: '8rem',
-            fontWeight: 700, // Lowered from 900 to 700
+            fontWeight: 600, 
             textAlign: 'center',
             mixBlendMode: 'color-dodge',
             transform: animationStarted ? undefined : 'translateY(-100vh)',
@@ -92,7 +92,7 @@ function App() {
                 width: '80px',
                 height: '80px',
                 borderRadius: '24px',
-                background: 'white',
+                background: 'rgba(255, 255, 255, 0.2)', // Lighter, more transparent
                 border: '2px solid #555',
                 display: 'flex',
                 flexDirection: 'column',
@@ -103,6 +103,7 @@ function App() {
                 textDecoration: 'none',
                 position: 'relative',
                 animationDelay: `${1.2 + index * 0.15}s`,
+                mixBlendMode: 'color-dodge', // Same blend mode as text
                 '--hover-color': navLink.color
               } as React.CSSProperties & { '--hover-color': string }}
               onMouseEnter={(e) => {
@@ -110,7 +111,7 @@ function App() {
                 e.currentTarget.style.transform = 'translateY(-5px)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'white'
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)'
                 e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
