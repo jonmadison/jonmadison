@@ -113,8 +113,21 @@ body {
   line-height: 1.1;
   position: relative;
   display: inline-block;
+  mix-blend-mode: color-dodge; /* ← CHANGE BLEND MODE HERE: multiply, overlay, soft-light, etc. */
 }
-
+        h1 {
+            margin: 0;
+            /* Background image on the TEXT itself - NO opacity overlay */
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: #333;
+            font-size: 8rem;
+            font-weight: 900;
+            text-align: center;
+            /* Animation to test if it breaks blend modes */
+            transform: translateY(-100vh);
+            opacity: 0;
+        }
 /* Bowtie styling for cover page */
 /* .cover-header h1 .bowtie {
   position: absolute;
@@ -467,5 +480,29 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+/* Video text blend animation */
+@keyframes videoTextBlend {
+  0% {
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57);
+    opacity: 0.8;
+  }
+  25% {
+    background: linear-gradient(90deg, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff6b6b);
+    opacity: 0.7;
+  }
+  50% {
+    background: linear-gradient(135deg, #45b7d1, #96ceb4, #feca57, #ff6b6b, #4ecdc4);
+    opacity: 0.9;
+  }
+  75% {
+    background: linear-gradient(180deg, #96ceb4, #feca57, #ff6b6b, #4ecdc4, #45b7d1);
+    opacity: 0.6;
+  }
+  100% {
+    background: linear-gradient(225deg, #feca57, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+    opacity: 0.8;
   }
 }

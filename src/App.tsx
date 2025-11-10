@@ -71,80 +71,44 @@ function App() {
   }
 
   return (
-    <div className="app">
-      {/* Background overlay for opacity control */}
-      {backgroundSource && (
-        <>
-          {/* Conditional rendering: Video or Image backdrop */}
-          {backdropType === 'video' ? (
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100vw',
-                height: '100vh',
-                objectFit: 'cover',
-                opacity: 1,
-                zIndex: -3
-              }}
-            >
-              <source src={backgroundSource} type="video/webm" />
-            </video>
-          ) : (
-            <div 
-              className="background-overlay"
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100vw',
-                height: '100vh',
-                backgroundImage: `url(${backgroundSource})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center center',
-                backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'fixed',
-                opacity: 0.8,
-                zIndex: -3
-              }}
-            />
-          )}
-          
-          <div 
-            className="background-mask"
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              backgroundColor: '#efefef',
-              opacity: 0.2,
-              zIndex: -2
-            }}
-          />
-          <div 
-            className="background-gradient"
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              background: 'linear-gradient(to bottom, transparent 20%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.7) 60%, white 100%)',
-              zIndex: -1
-            }}
-          />
-        </>
+    <div 
+      className="app"
+      style={{
+        // WORKING SOLUTION: Gradient overlay + background image
+        ...(backdropType === 'image' && backgroundSource ? {
+          background: `linear-gradient(rgba(128,128,128,.2), rgba(128,128,128,.8)), url(${backgroundSource}) center/cover no-repeat fixed`,
+        } : {
+          background: '#222', // Dark fallback for video
+        })
+      }}
+    >
+      {/* Video backdrop if needed */}
+      {backdropType === 'video' && backgroundSource && (
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            minWidth: '100vw',
+            minHeight: '100vh',
+            width: 'auto',
+            height: 'auto',
+            transform: 'translateX(-50%) translateY(-50%)',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+            zIndex: -1
+          }}
+        >
+          <source src={backgroundSource} type="video/webm" />
+        </video>
       )}
-      
-      {/* Cover Page */}
-      <div className="cover-page">
+        
+        {/* Cover Page - Now INSIDE the backdrop container */}
+        <div className="cover-page">
         <div className="main-content">
           <div
             className={`cover-header ${animationStarted ? 'animate-fall' : ''}`}
@@ -199,10 +163,10 @@ function App() {
             ))}
           </nav>
         </div>
-      </div>
+        </div>
 
-      {/* Footer */}
-      <footer className="site-footer">
+        {/* Footer - Also inside backdrop container */}
+        <footer className="site-footer">
         {backdropMeta && (
           <div style={{ marginBottom: '4px', fontSize: '11px', opacity: 0.9 }}>
             {backdropMeta}
