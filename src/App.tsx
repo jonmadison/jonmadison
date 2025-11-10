@@ -48,7 +48,8 @@ function App() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'relative'
+        position: 'relative',
+        paddingBottom: '128px' // Shifts content up by 64px (64px * 2 for centering)
       }}
     >
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -61,7 +62,7 @@ function App() {
             WebkitBackgroundClip: 'text',
             color: '#333',
             fontSize: '8rem',
-            fontWeight: 900,
+            fontWeight: 700, // Lowered from 900 to 700
             textAlign: 'center',
             mixBlendMode: 'color-dodge',
             transform: animationStarted ? undefined : 'translateY(-100vh)',
